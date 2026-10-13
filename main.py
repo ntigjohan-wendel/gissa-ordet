@@ -6,41 +6,45 @@ SKETCH_BASE = r"""
      /|\
      / \
 """
+UNKNOWN_FILLER = "_"
 
 # State
 game_running = True
-guesses = []
-correctWord : str
+correctWord: str
 hearts = START_HEARTS
-display : str
+currentGuess: list = []
 
 def game_present():
     hstr = (hearts*HEART).replace(""," ")
-    print(f"{hstr}{SKETCH_BASE}\n{display}")
+    print(len(currentGuess))
+    print(f"{hstr}{SKETCH_BASE}\n{str().join(currentGuess)}")
 
 def game_end():
     game_present()
     print("Game over")
-    print(f"Rätt ord var: {correctWord}")
-
-def game_updateDisplay():
-    for 
-    pass
+    print(f"Rätt ord var: {correctWord}")   
 
 def game_guess():
-    global hearts
+    global hearts, currentGuess
     guess = input("Gissa: ").lower()
-    guesses.append(guess)
+    correct = False
     for i in range(len(guess)):
-        if guess[i] == correctWord[i]:
-            continue
+        c = guess[i]
+        for i2 in range(len(correctWord)):
+            cx = correctWord[i2]
+            if c == cx:
+                correct = True
+                currentGuess[i] = c
+
+    if correct == False:
         hearts -= 1
+        print("Incorrect guess.")
     game_present()
 
 def main():
-    global correctWord, game_running, hearts, display
+    global correctWord, game_running, hearts, currentGuess
     correctWord = input("Ord att gissa på: ").lower()
-    display = "_"*len(correctWord)
+    currentGuess = list(UNKNOWN_FILLER * len(correctWord))
 
     # Game loop
     while game_running:
