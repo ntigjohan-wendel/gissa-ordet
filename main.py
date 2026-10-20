@@ -25,22 +25,28 @@ def game_end():
 
 def game_guess() -> bool:
     global hearts, currentGuess
-    guess = input("Gissa: ").lower()
+    # Only allow guesses on a single character
+    guess = input("Gissa: ").lower().strip()[0]
     correct = False
 
     # For every character in guess.
     for i in range(len(guess)):
-        c = guess[i]
+        cGuess = guess[i]
         # Check if character exists in correct word
         for i2 in range(len(correctWord)):
-            cx = correctWord[i2]
-            if c == cx:
+            cWord = correctWord[i2]
+            cCurrentGuess = currentGuess[i2]
+            if cCurrentGuess != UNKNOWN_FILLER:
+                print(f"Du har redan gissat på {cCurrentGuess}")
+                correct = False
+                break
+            if cGuess == cWord:
                 correct = True
-                currentGuess[i2] = c
+                currentGuess[i2] = cGuess
 
     if correct == False:
         hearts -= 1
-        print("Incorrect guess.")
+        print("Fel svar.")
     game_present()
 
 def game_hasWon() -> bool:
@@ -54,11 +60,13 @@ def main():
     # Game loop
     while game_running:
         game_guess()
+        print()
         if hearts == 0:
             game_running = False
             break
 
         if game_hasWon():
+            print("-------------")
             print("Du vann!")
             break
 
