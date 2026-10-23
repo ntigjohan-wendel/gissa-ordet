@@ -35,11 +35,6 @@ def game_guess() -> bool:
         # Check if character exists in correct word
         for i2 in range(len(correctWord)):
             cWord = correctWord[i2]
-            cCurrentGuess = currentGuess[i2]
-            if cCurrentGuess != UNKNOWN_FILLER:
-                print(f"Du har redan gissat på {cCurrentGuess}")
-                correct = False
-                break
             if cGuess == cWord:
                 correct = True
                 currentGuess[i2] = cGuess
